@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Socket.io Client</title>
+	</head>
+	<body>
+		<h1>Socket.io Client Test</h1>
+
+		<script src="https://cdn.jsdelivr.net/npm/socket.io-client@4.7.5/dist/socket.io.js"></script>
+		<script>
+			// Replace with your server's URL and a valid JWT token
+			const serverUrl = "http://localhost:3000";
+			const jwtToken =
+				"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4OWYwOTFiYWNjZDY3Mzg2MzY2Y2UyYSIsImlhdCI6MTc1NTI1MzkwMiwiZXhwIjoxNzU1MjU3NTAyfQ.0CTRvITr7elWWA2YXid68j0rHOcadlB7Q_ET34G9Vxg";
+
+			// Connect to the server with the authentication token
+			const socket = io(serverUrl, {
+				auth: {
+					token: jwtToken,
+				},
+			});
+
+			// Handle connection
+			socket.on("connect", () => {
+				console.log("Connected to server! Your ID:", socket.id);
+
+				// Send a message to the server after a short delay
+				setTimeout(() => {
+					const messageToSend = "Hello from the browser!";
+					socket.emit("send_message", messageToSend);
+					console.log("Sent message:", messageToSend);
+				}, 2000);
+			});
+
+			// Handle incoming messages from the server
+			socket.on("receive_message", (data) => {
+				console.log("Received a message:", data.text);
+			});
+
+			// Handle connection errors
+			socket.on("connect_error", (err) => {
+				console.error("Connection failed:", err.message);
+			});
+		</script>
+	</body>
+</html>

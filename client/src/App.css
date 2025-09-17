@@ -1,0 +1,7 @@
+@import "tailwindcss";
+@custom-variant dark (&:where(.dark, .dark *));
+
+.my-element {
+	background-color: #000000; /* Semi-transparent background */
+	backdrop-filter: blur(10px); /* Apply 10px blur to the background */
+}
