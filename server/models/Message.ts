@@ -9,11 +9,12 @@
 // export default mongoose.model("Message", messageSchema);
 
 import mongoose from "mongoose";
+import { Model, MessageType } from "./types.js";
 
-const messageSchema = mongoose.Schema(
+const messageSchema = new mongoose.Schema<MessageType>(
 	{
-		sender: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
-		convo: { type: mongoose.Schema.Types.ObjectId, ref: "Conversation" },
+		sender: { type: mongoose.Schema.Types.ObjectId, ref: Model.user },
+		convo: { type: mongoose.Schema.Types.ObjectId, ref: Model.converstaion },
 		text: { type: String },
 		date: { type: Date, default: Date.now },
 		media: { type: String, default: "" },
@@ -21,4 +22,4 @@ const messageSchema = mongoose.Schema(
 	{ timestamps: true }
 );
 
-export default mongoose.model("Message", messageSchema);
+export default mongoose.model(Model.message, messageSchema);
