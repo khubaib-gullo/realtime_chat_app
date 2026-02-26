@@ -1,0 +1,19 @@
+services:
+  backend:
+    build: ./server
+    container_name: backend
+    restart: always
+    env_file:
+      - ./server/.env
+    ports:
+      - "4000:4000"
+
+  frontend:
+    build:
+      context: ./client
+    container_name: frontend
+    restart: always
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
