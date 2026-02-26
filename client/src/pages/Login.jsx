@@ -8,6 +8,7 @@ import { redirect } from "react-router-dom";
 import useStore from "../hooks/authCheck";
 import { useNavigate } from "react-router";
 import { ToastContainer, toast } from "react-toastify";
+import base_url from "../export";
 
 export default function Login() {
 	const [userDetails, setUserDetails] = useState("");
@@ -21,9 +22,9 @@ export default function Login() {
 			// console.log(tokenResponse.access_token);
 			await axios
 				.post(
-					"http://localhost:4000/api/auth/google/signin",
+					`${base_url}/api/auth/google/signin`,
 					{ tokenResponse },
-					{ withCredentials: true }
+					{ withCredentials: true },
 				)
 				.then((res) => {
 					console.log(`Server response ${JSON.stringify(res.data)}`);

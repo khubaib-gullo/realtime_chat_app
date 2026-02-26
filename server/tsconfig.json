@@ -4,15 +4,17 @@
 
 	"compilerOptions": {
 		"lib": ["es2019", "es2020.promise", "es2020.bigint", "es2020.string"],
+		"outDir": "./dist",
+		"rootDir": "./",
 		"module": "node16",
 		"target": "es2019",
 
 		"strict": true,
 		"esModuleInterop": true,
 		"skipLibCheck": true,
-		"moduleResolution": "node16"
-	},
-	"paths": {
-		"@/models/*": ["./models/*"]
+		"moduleResolution": "node16",
+		"paths": {
+			"@/models/*": ["./models/*"]
+		}
 	}
 }

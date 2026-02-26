@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
+import base_url from "../export";
 
 export default function UserProfile() {
 	const [user, setUser] = useState("none");
@@ -7,7 +8,7 @@ export default function UserProfile() {
 	const handleClick = async () => {
 		console.log("clicked ");
 		await axios
-			.get("http://localhost:4000/api/auth/test", {
+			.get(`${base_url}/api/auth/test`, {
 				withCredentials: true,
 			})
 			.then((response) => {

@@ -8,9 +8,10 @@ import StartChat from "./StartChat";
 import Convo from "./Convo";
 import LinearProgress from "@mui/material/LinearProgress";
 import { io } from "socket.io-client";
+import base_url from "../export";
 
 export default function MsgArea(props) {
-	const serverUrl = "http://localhost:4000";
+	// const base_url = base_url;
 	const [messages, setMessages] = useState([]);
 	const [messageInput, setMessageInput] = useState("");
 	const [socket, setSocket] = useState(null);
@@ -38,10 +39,10 @@ export default function MsgArea(props) {
 			setShowBar(true);
 
 			const response = await axios.get(
-				`http://localhost:4000/api/chatroom/list_messages?convo_id=${convo_id}&page_count=${pageCount}`,
+				`${base_url}/api/chatroom/list_messages?convo_id=${convo_id}&page_count=${pageCount}`,
 				{
 					withCredentials: true,
-				}
+				},
 			);
 			// console.log("response for message area " + JSON.stringify(response.data));
 			var { data } = response.data.messages;
@@ -68,7 +69,7 @@ export default function MsgArea(props) {
 	};
 
 	useEffect(() => {
-		const socket = io(serverUrl, {
+		const socket = io(base_url, {
 			withCredentials: true,
 		});
 
@@ -165,8 +166,8 @@ export default function MsgArea(props) {
 	const getData = async () => {
 		try {
 			const response = await axios.get(
-				"http://localhost:4000/api/chatroom/list_conversation",
-				{ withCredentials: true }
+				`${base_url}/api/chatroom/list_conversation`,
+				{ withCredentials: true },
 			);
 			const { all_conversations } = response.data;
 			// console.log("all_conversations " + JSON.stringify(all_conversations));
@@ -215,8 +216,8 @@ export default function MsgArea(props) {
 	const search_user = async (q) => {
 		try {
 			const response = await axios.get(
-				`http://localhost:4000/api/chatroom/search_user/?search=${q}`,
-				{ withCredentials: true }
+				`${base_url}/api/chatroom/search_user/?search=${q}`,
+				{ withCredentials: true },
 			);
 			const { status, user } = response.data;
 			setSearchUser(user);
@@ -230,9 +231,9 @@ export default function MsgArea(props) {
 			console.log("idddddd ", id);
 			try {
 				const response = await axios.post(
-					"http://localhost:4000/api/chatroom/start_search_convo",
+					`${base_url}/api/chatroom/start_search_convo`,
 					{ reciever_id: id },
-					{ withCredentials: true }
+					{ withCredentials: true },
 				);
 				let { status } = response.data;
 				if (status === "ok") {

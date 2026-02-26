@@ -1,12 +1,13 @@
 import React, { use, useState } from "react";
 import axios from "axios";
+import base_url from "../export";
 
 export default function SearchStartConvo({ query }) {
 	const start_new_convo = async (q) => {
 		try {
 			const response = await axios.get(
-				`http://localhost:4000/api/chatroom/search_user/?search=${q}`,
-				{ withCredentials: true }
+				`${base_url}/api/chatroom/search_user/?search=${q}`,
+				{ withCredentials: true },
 			);
 			const { status } = response.data;
 			return status;

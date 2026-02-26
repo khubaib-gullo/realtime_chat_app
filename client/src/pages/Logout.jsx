@@ -4,13 +4,14 @@ import { useNavigate } from "react-router";
 import { googleLogout } from "@react-oauth/google";
 import axios from "axios";
 import useStore from "../hooks/authCheck";
+import base_url from "../export";
 
 export default function Logout() {
 	const navigate = useNavigate();
 	const lo = useStore((state) => state.logout);
 
 	const logout = async () => {
-		const response = await axios.get("http://localhost:4000/api/auth/logout", {
+		const response = await axios.get(`${base_url}/api/auth/logout`, {
 			withCredentials: true,
 		});
 

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import base_url from "../export";
 
 export default function UserInfo({
 	convo_id,
@@ -12,10 +13,10 @@ export default function UserInfo({
 
 	const get_media_url = async (convo_id) => {
 		const response = await axios.get(
-			`http://localhost:4000/api/chatroom/get_media?convo_id=${convo_id}`,
+			`${base_url}/api/chatroom/get_media?convo_id=${convo_id}`,
 			{
 				withCredentials: true,
-			}
+			},
 		);
 		// console.log("mediaaaaaaaaaaaaaa ", response.data.media);
 		let data = response.data.media;
