@@ -3,9 +3,6 @@ name: Build & Push Images
 on:
   push:
     branches: [main]
-    paths:
-      - "client/**" # only runs frontend job if client folder changes
-      - "server/**" # only runs backend job if server folder changes
 
 env:
   REGISTRY: ghcr.io
@@ -13,9 +10,6 @@ env:
 jobs:
   build-backend:
     runs-on: ubuntu-latest
-    # only runs if server files changed
-    if: contains(github.event.head_commit.modified, 'server/') || contains(github.event.head_commit.added, 'server/')
-
     permissions:
       contents: read
       packages: write
@@ -24,7 +18,14 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Check if server changed
+        id: server-changes
+        uses: tj-actions/changed-files@v44
+        with:
+          files: server/**
+
       - name: Log in to GitHub Container Registry
+        if: steps.server-changes.outputs.any_changed == 'true'
         uses: docker/login-action@v3
         with:
           registry: ghcr.io
@@ -32,6 +33,7 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build and Push Backend Image
+        if: steps.server-changes.outputs.any_changed == 'true'
         uses: docker/build-push-action@v5
         with:
           context: ./server
@@ -40,9 +42,6 @@ jobs:
 
   build-frontend:
     runs-on: ubuntu-latest
-    # only runs if client files changed
-    if: contains(github.event.head_commit.modified, 'client/') || contains(github.event.head_commit.added, 'client/')
-
     permissions:
       contents: read
       packages: write
@@ -51,7 +50,14 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Check if client changed
+        id: client-changes
+        uses: tj-actions/changed-files@v44
+        with:
+          files: client/**
+
       - name: Log in to GitHub Container Registry
+        if: steps.client-changes.outputs.any_changed == 'true'
         uses: docker/login-action@v3
         with:
           registry: ghcr.io
@@ -59,6 +65,7 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build and Push Frontend Image
+        if: steps.client-changes.outputs.any_changed == 'true'
         uses: docker/build-push-action@v5
         with:
           context: ./client
